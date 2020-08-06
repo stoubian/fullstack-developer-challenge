@@ -6,34 +6,23 @@ class PostalCodeForm extends Component {
   constructor(props) {
     super(props);
 
-    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
-    this.state = { postalCodeSearchValue: '' };
-  }
-
-  handleChange(changeEvent, { value }) {
-    this.setState({ postalCodeSearchValue: value });
   }
 
   handleSubmit(submitEvent) {
-    const { onSubmittedData } = this.props;
-    const { postalCodeSearchValue } = this.state;
-
     submitEvent.preventDefault();
-    onSubmittedData({ postalCodeSearchValue });
+    this.props.onSubmittedData();
   }
 
   render() {
-    const { loading } = this.props;
-    const { postalCodeSearchValue } = this.state;
+    const { loading, postalCodeSearchValue, onChangedPostalCode } = this.props;
 
     return (
       <Form onSubmit={this.handleSubmit}>
         <Form.Input
           fluid
           focus
-          onChange={this.handleChange}
+          onChange={onChangedPostalCode}
           placeholder="Search Location by Postal Code…"
           value={postalCodeSearchValue}
         />
@@ -45,11 +34,14 @@ class PostalCodeForm extends Component {
 
 PostalCodeForm.propTypes = {
   loading: PropTypes.bool,
+  postalCodeSearchValue: PropTypes.string,
   onSubmittedData: PropTypes.func.isRequired,
+  onChangedPostalCode: PropTypes.func.isRequired,
 };
 
 PostalCodeForm.defaultProps = {
   loading: false,
+  postalCodeSearchValue: '',
 };
 
 export default PostalCodeForm;
