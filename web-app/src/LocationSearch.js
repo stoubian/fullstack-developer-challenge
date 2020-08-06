@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { Container, Divider, Loader } from 'semantic-ui-react';
+
 import PostalCodeForm from './PostalCodeForm';
 import LocationSearchResults from './LocationSearchResults';
+import localStorageHelper from './localstorage-helper'
 
 const initialState = {
   loading: false,
   locations: null,
   postalCodeSearchValue: '',
 };
+
+const MAX_SEARCH_HISTORY = 5
 
 class LocationSearch extends Component {
   constructor(props) {
@@ -22,8 +26,11 @@ class LocationSearch extends Component {
   handleSubmittedData() {
     this.setState({ loading: true }, async () => {
       try {
+        const {postalCodeSearchValue} = this.state;
+        localStorageHelper.storeItem('searchHistory', postalCodeSearchValue, MAX_SEARCH_HISTORY);
+
         const response = await fetch(
-          `${process.env.REACT_APP_API_ORIGIN}/locations?postalCode=${this.state.postalCodeSearchValue}`
+          `${process.env.REACT_APP_API_ORIGIN}/locations?postalCode=${postalCodeSearchValue}`
         );
 
         if (!response.ok) {
