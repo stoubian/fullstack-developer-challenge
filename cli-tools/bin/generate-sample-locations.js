@@ -39,11 +39,9 @@ output.on('error', handleStreamError);
 const csvStringifier = stringify();
 
 csvStringifier.on('readable', () => {
-  let row;
-  // eslint-disable-next-line no-cond-assign
-  while ((row = csvStringifier.read())) {
-    output.write(row);
-  }
+  const row = csvStringifier.read();
+
+  if (row) output.write(row);
 });
 
 csvStringifier.on('error', handleStreamError);
