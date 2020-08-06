@@ -28,8 +28,8 @@ app.use(cors());
 
 app.use('*', logQuery);
 
-app.get('/locations', locationsRouter);
-app.get('/postal-codes', postalCodesRouter);
+app.use('/locations', locationsRouter);
+app.use('/postal-codes', postalCodesRouter);
 
 app.use(handleError);
 
