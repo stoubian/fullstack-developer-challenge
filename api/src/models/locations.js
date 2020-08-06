@@ -1,7 +1,10 @@
 import csvParse from 'csv-parse/lib/sync';
+
 import EventEmitter from 'events';
 import fs from 'fs';
 import path from 'path';
+import _ from 'lodash';
+
 import filterByRegExp from '../lib/filter-by-reg-exp';
 import logger from '../lib/logger';
 
@@ -43,6 +46,12 @@ class LocationsDataContainer extends EventEmitter {
     this.assertInitialized();
 
     return filterByRegExp(this.data, query);
+  }
+
+  groupBy(query) {
+    this.assertInitialized();
+
+    return _.groupBy(this.data, franchisee => franchisee[query]);
   }
 }
 
