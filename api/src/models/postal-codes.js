@@ -37,6 +37,7 @@ class PostalCodesDataContainer extends EventEmitter {
         throw new Error(gbResponse.error);
       }
 
+      // memory leak is maybe here ? we could try to use stream instead of buffer.
       const gbData = Buffer.from(await gbResponse.arrayBuffer());
 
       // We are only interested in entries in the “Data/multi_csv” directory of the zip file
@@ -56,6 +57,7 @@ class PostalCodesDataContainer extends EventEmitter {
             columns: true,
           });
 
+          //@TODO: use a map or _.groupBy()
           for (const entry of gbCsvEntries) {
             data.push({
               postalCode: entry.pcds,
